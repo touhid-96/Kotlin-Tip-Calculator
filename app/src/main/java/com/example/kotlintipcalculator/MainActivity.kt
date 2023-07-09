@@ -4,12 +4,14 @@ import android.animation.ArgbEvaluator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import kotlin.math.roundToInt
 
 private const val TAG = "MainActivity"
 private const val INITIAL_TIP_PERCENT = 15
@@ -21,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tipTV: TextView
     private lateinit var totalTV: TextView
     private lateinit var tipDescriptionTV: TextView
+    private lateinit var splitByET: EditText
+    private lateinit var billPerEachTV: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,10 +35,15 @@ class MainActivity : AppCompatActivity() {
         tipTV = findViewById(R.id.tip_textview)
         totalTV = findViewById(R.id.total_textview)
         tipDescriptionTV = findViewById(R.id.tip_description_textview)
+        splitByET = findViewById(R.id.split_by_edittext)
+        splitByET.inputType = InputType.TYPE_CLASS_NUMBER
+        billPerEachTV = findViewById(R.id.bill_per_each_textview)
 
+        /*-------------------------default value-----------------------------------*/
         seekBar.progress = INITIAL_TIP_PERCENT  //setting a default value on seekbar
         tipPercentageTV.text = "$INITIAL_TIP_PERCENT%"  //setting the default value in percentage textview
         updateTipDescription(INITIAL_TIP_PERCENT) //setting the default description sync with seekbar & percentage
+        /*-------------------------default value-----------------------------------*/
 
         seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, progress: Int, p2: Boolean) {
@@ -42,12 +51,12 @@ class MainActivity : AppCompatActivity() {
                 tipPercentageTV.text = "$progress%"
                 computeTipAndTotal()
                 updateTipDescription(progress)
+                computeBillSplit()
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}
 
             override fun onStopTrackingTouch(p0: SeekBar?) {}
-
         })
 
         billAmountET.addTextChangedListener(object : TextWatcher {
@@ -58,7 +67,19 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {
                 //Log.i(TAG, "afterTextChanged $p0")   //logcat debug
                 computeTipAndTotal()
+                computeBillSplit()
             }
+        })
+
+        splitByET.addTextChangedListener(object  : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+                computeBillSplit()
+            }
+
         })
     }
 
@@ -95,5 +116,22 @@ class MainActivity : AppCompatActivity() {
         ) as Int
 
         tipDescriptionTV.setTextColor(color)
+    }
+
+    private fun computeBillSplit() {
+        val totalAmount = totalTV.text.toString().toDouble()
+        var devideBy = 1
+        if(splitByET.text.isEmpty()) {
+            devideBy = 1
+        } else {
+            if (splitByET.text.toString().toInt() == 0) {
+                devideBy = 1
+            } else {
+                devideBy = splitByET.text.toString().toInt()
+            }
+        }
+
+        val billPerEachPerson = totalAmount / devideBy
+        billPerEachTV.text = billPerEachPerson.roundToInt().toString()
     }
 }
