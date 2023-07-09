@@ -15,6 +15,7 @@ import kotlin.math.roundToInt
 
 private const val TAG = "MainActivity"
 private const val INITIAL_TIP_PERCENT = 15
+private const val INITIAL_TOTAL_AMOUNT = 0
 
 class MainActivity : AppCompatActivity() {
     private lateinit var billAmountET: EditText
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         billAmountET = findViewById(R.id.bill_amount_edittext)
+        billAmountET.inputType = InputType.TYPE_CLASS_NUMBER
         tipPercentageTV = findViewById(R.id.tip_percentage_textview)
         seekBar = findViewById(R.id.percentage_seekbar)
         tipTV = findViewById(R.id.tip_textview)

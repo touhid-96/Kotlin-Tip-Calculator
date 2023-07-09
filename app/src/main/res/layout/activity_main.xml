@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="10dp"
-                android:text="$23.76 (test)"
+                android:text="0.00"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textAlignment="textStart"/>
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
-                android:text="$270.67 (test)"
+                android:text="0.00"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textAlignment="textStart"/>
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="10dp"
-                android:text="$256 (test)"
+                android:text="0"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textAlignment="textStart"/>
